@@ -8,12 +8,11 @@ addons:
 
 before_install:
   - chmod +x gradlew
-  - ls -lah gradle/wrapper/
-  - ls -lah
-  - ./gradlew check
+
 script:
   - jdk_switcher use oraclejdk8
   - ./gradlew check
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
