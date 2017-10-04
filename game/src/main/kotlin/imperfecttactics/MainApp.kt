@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.GameApplication
 import com.almasb.fxgl.entity.Entities
 import com.almasb.fxgl.settings.GameSettings
 import javafx.scene.paint.Color
+import javafx.scene.paint.Paint
 import javafx.scene.shape.Polygon
 
 class MainApp : GameApplication() {
@@ -21,23 +22,27 @@ class MainApp : GameApplication() {
 
     override fun initGame() {
 
-        val gameMap = GameMap(16, 16, 23)
+        val gameMap = GameMap(6, 6, 40)
 
         gameMap.tiles.forEach { column ->
             column.forEach { tile ->
                 Entities.builder().apply {
-                    at(tile.coord.x.toDouble(), tile.coord.y.toDouble())
-                    viewFromNode(Hexagon(20.0))
+                    at(tile.coord.x.toDouble() + 200, tile.coord.y.toDouble() + 60)
+                    viewFromNode(Hexagon(45.0, Color.BLACK))
                 }.buildAndAttach()
 
+                Entities.builder().apply {
+                    at(tile.coord.x.toDouble() + 200, tile.coord.y.toDouble() + 60)
+                    viewFromNode(Hexagon(36.0, Color.RED))
+                }.buildAndAttach()
             }
         }
     }
 
-    class Hexagon(radius: Double) : Polygon(*generateHexagon(radius)) {
+    class Hexagon(radius: Double, fill: Paint) : Polygon(*generateHexagon(radius)) {
 
         init {
-            fill = Color.RED
+            this.fill = fill
         }
 
         companion object {
