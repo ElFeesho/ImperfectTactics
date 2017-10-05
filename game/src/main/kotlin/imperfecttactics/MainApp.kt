@@ -20,7 +20,9 @@ class MainApp : GameApplication() {
 
     override fun initGame() {
         val gameMap = GameMap(6, 6, 40)
+
         gameMap.addBuilding(0, 0)
+        gameMap.addBuilding(5, 5)
 
         createMap(gameMap)
     }
