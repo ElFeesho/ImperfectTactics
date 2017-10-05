@@ -34,5 +34,15 @@ class GameMapTest {
         assertThat(map.tileAt(1, 1).coord, `is`(Coord(25, (hexHeight * 2.0).toInt())))
     }
 
+    @Test
+    fun aMapCanContainABuilding() {
+        val map = GameMap(1, 1, 10)
+        val hexHeight = Math.sqrt(3.0) / 2.0 * 20.0
+
+        map.addBuilding(0, 0)
+
+        assertThat(map.buildings.first().coord, `is`(Coord(10, (hexHeight/2.0).toInt())))
+    }
+
 
 }
