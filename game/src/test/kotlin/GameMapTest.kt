@@ -35,13 +35,23 @@ class GameMapTest {
     }
 
     @Test
-    fun aMapCanContainABuilding() {
+    fun aMapCanContainAPlayerBuilding() {
         val map = GameMap(1, 1, 10)
         val hexHeight = Math.sqrt(3.0) / 2.0 * 20.0
 
-        map.addBuilding(0, 0)
+        map.addPlayerBuilding(0, 0)
 
-        assertThat(map.buildings.first().coord, `is`(Coord(10, (hexHeight/2.0).toInt())))
+        assertThat(map.playerBuildings.first().coord, `is`(Coord(10, (hexHeight/2.0).toInt())))
+    }
+
+    @Test
+    fun aMapCanContainAnEnemyBuilding() {
+        val map = GameMap(1, 1, 10)
+        val hexHeight = Math.sqrt(3.0) / 2.0 * 20.0
+
+        map.addEnemyBuilding(0, 0)
+
+        assertThat(map.enemyBuildings.first().coord, `is`(Coord(10, (hexHeight/2.0).toInt())))
     }
 
 

@@ -6,7 +6,9 @@ class GameMap(cols: Int, rows: Int, private val tileRadius: Int) {
     private val tileHeight = Math.sqrt(3.0)/2.0 * tileWidth
     private val tileStride = tileRadius + tileRadius/2
 
-    val buildings: MutableList<GameTile> = mutableListOf()
+    val enemyBuildings: MutableList<GameTile> = mutableListOf()
+    val playerBuildings: MutableList<GameTile> = mutableListOf()
+
     val tiles = Array(cols, { column ->
         Array(rows, {
             row ->
@@ -25,7 +27,11 @@ class GameMap(cols: Int, rows: Int, private val tileRadius: Int) {
         return tiles[x][y]
     }
 
-    fun addBuilding(x: Int, y: Int) {
-        buildings.add(GameTile(cartesianToCoord(x, y)))
+    fun addPlayerBuilding(x: Int, y: Int) {
+        playerBuildings.add(GameTile(cartesianToCoord(x, y)))
+    }
+
+    fun addEnemyBuilding(x: Int, y: Int) {
+        enemyBuildings.add(GameTile(cartesianToCoord(x, y)))
     }
 }
