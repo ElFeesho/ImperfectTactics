@@ -3,11 +3,21 @@ package imperfecttactics
 import com.almasb.fxgl.app.FXGL
 import com.almasb.fxgl.app.GameApplication
 import com.almasb.fxgl.entity.Entities
+import com.almasb.fxgl.entity.RenderLayer
 import com.almasb.fxgl.settings.GameSettings
 import javafx.scene.paint.Color
 import javafx.scene.shape.SVGPath
 
 class MainApp : GameApplication() {
+
+    private val gameMapLayer = GameLayer(0, "map")
+    private val gameMapSelectionLayer = GameLayer(0, "mapSelection")
+    private val actorLayer = GameLayer(0, "actors")
+
+    class GameLayer(private val zIndex:Int, private val name:String) : RenderLayer {
+        override fun index() = zIndex
+        override fun name() = this.name
+    }
 
     override fun initSettings(settings: GameSettings) {
         settings.apply {
@@ -28,6 +38,8 @@ class MainApp : GameApplication() {
         gameMap.addPlayerBuilding(0, 0)
         gameMap.addEnemyBuilding(5, 5)
 
+        gameMap.addPlayerTank(1, 0)
+
         createMap(gameMap)
     }
 
@@ -35,11 +47,13 @@ class MainApp : GameApplication() {
         gameMap.tiles.forEach { column ->
             column.forEach { tile ->
                 Entities.builder().apply {
+                    renderLayer(gameMapLayer)
                     at(tile.coord.x.toDouble() + GameMapXOffset, tile.coord.y.toDouble() + GameMapYOffset)
                     viewFromNode(Hexagon(45.0, Color.BLACK))
                 }.buildAndAttach()
 
                 Entities.builder().apply {
+                    renderLayer(gameMapLayer)
                     at(tile.coord.x.toDouble() + GameMapXOffset, tile.coord.y.toDouble() + GameMapYOffset)
                     viewFromNode(Hexagon(36.0, Color.GREY))
                 }.buildAndAttach()
@@ -49,6 +63,7 @@ class MainApp : GameApplication() {
         gameMap.playerBuildings.forEach { building ->
             Entities.builder().apply {
                 at(building.coord.x.toDouble() + GameMapXOffset - 25, building.coord.y.toDouble() + GameMapYOffset - 41)
+                renderLayer(actorLayer)
                 viewFromNode(SVGPath().apply {
                     content = FXGL.getAssetLoader().getStream("/assets/svgs/city-white.svg").use {
                         it.bufferedReader().lines().reduce("", { acc, line -> acc + line })
@@ -56,11 +71,11 @@ class MainApp : GameApplication() {
                     fill = Color.WHITE
                 })
             }.buildAndAttach()
-
         }
 
         gameMap.enemyBuildings.forEach { building ->
             Entities.builder().apply {
+                renderLayer(actorLayer)
                 at(building.coord.x.toDouble() + GameMapXOffset - 25, building.coord.y.toDouble() + GameMapYOffset - 41)
                 viewFromNode(SVGPath().apply {
                     content = FXGL.getAssetLoader().getStream("/assets/svgs/city-black.svg").use {
@@ -69,7 +84,14 @@ class MainApp : GameApplication() {
                     fill = Color.BLACK
                 })
             }.buildAndAttach()
+        }
 
+        gameMap.playerTanks.forEach { tank ->
+            Entities.builder().apply {
+                renderLayer(actorLayer)
+                at(tank.coord.x.toDouble() + GameMapXOffset - 25, tank.coord.y.toDouble() + GameMapYOffset - 41)
+                viewFromTexture("tank-white.png")
+            }.buildAndAttach()
         }
     }
 

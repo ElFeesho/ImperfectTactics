@@ -45,6 +45,16 @@ class GameMapTest {
     }
 
     @Test
+    fun aMapCanContainAPlayerTank() {
+        val map = GameMap(3, 3, 10)
+        val hexHeight = Math.sqrt(3.0) / 2.0 * 20.0
+
+        map.addPlayerTank(1, 1)
+
+        assertThat(map.playerTanks.first().coord, `is`(Coord(25, (hexHeight*2.0).toInt())))
+    }
+
+    @Test
     fun aMapCanContainAnEnemyBuilding() {
         val map = GameMap(1, 1, 10)
         val hexHeight = Math.sqrt(3.0) / 2.0 * 20.0
